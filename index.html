@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title>nback day</title>
+	<style>
+		.grid {
+  display: flex;                       /* establish flex container */
+  flex-wrap: wrap;                     /* enable flex items to wrap */
+  justify-content: space-around;
+  
+}
+.cell {
+  flex: 0 0 32%;                       /* don't grow, don't shrink, width */
+  height: 50px;
+  margin-bottom: 5px;
+  background-color: #999;
+}
+/*.cell:nth-child(3n) {
+  background-color: #F00;
+}*/
+	</style>
+</head>
+<body>
+
+<div class="grid">
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+  <div class="cell"></div>
+</div>
+
+<script>
+const n = 5;
+
+const previous = JSON.parse(localStorage.getItem("store")) ?? [];
+const previousTime = localStorage.getItem("previousTime");
+const now = Date.now();
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase();
+
+if (previousTime === null || now - Number(previousTime) >= 1_1) {
+	const letter = letters[Math.floor(Math.random() * letters.length)];
+	console.log(letter);
+	const position = Math.floor(Math.random() * 9);
+
+	document.getElementsByClassName("cell")[position].style.backgroundColor="#F00";
+
+	document.addEventListener("keyup", event => {
+		if (previous.length < n) {
+			return;
+		}
+		if (event.key === "d") {
+			if (previous[0].letter === letter) {
+				console.log("correctly pressed same letter");
+			} else {
+				console.log("wrongly pressed same letter");
+			}
+		} else if (event.key === "k") {
+			if (previous[0].position === position) {
+				console.log("correctly pressed same position");
+			} else {
+				console.log("wrongly pressed same position");
+			}
+		}
+	});
+	window.addEventListener("beforeunload", () => {
+		previous.push({letter, position});
+		if (previous.length > n) {
+			previous.shift();
+		}
+		localStorage.setItem("store", JSON.stringify(previous));
+		localStorage.setItem("previousTime", now);
+	});
+}
+
+
+</script>
+</body>
+</html>
