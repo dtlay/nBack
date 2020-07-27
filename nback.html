@@ -33,6 +33,10 @@
   <div class="cell"></div>
 </div>
 
+<div> 
+	<p id="show_letter">  </p>
+</div>
+
 <script>
 const n = 5;
 
@@ -44,6 +48,7 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase();
 
 if (previousTime === null || now - Number(previousTime) >= 1_1) {
 	const letter = letters[Math.floor(Math.random() * letters.length)];
+	document.getElementById("show_letter").innerHTML = "current letter: " + letter;
 	console.log(letter);
 	const position = Math.floor(Math.random() * 9);
 
@@ -75,6 +80,10 @@ if (previousTime === null || now - Number(previousTime) >= 1_1) {
 		localStorage.setItem("store", JSON.stringify(previous));
 		localStorage.setItem("previousTime", now);
 	});
+}
+else
+{
+	document.getElementById("show_letter").innerHTML = "not time to show letters yet, next letter will be shown at " + Date(Number(previousTime) + 1_1) 
 }
 
 
